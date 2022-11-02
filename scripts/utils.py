@@ -374,7 +374,7 @@ class PromptManager():
                 self.config.update({'upscale_keep_org' : value})
 
         elif command == 'mode':
-            if value == 'random' or value == 'standard':
+            if value == 'random' or value == 'standard' or value == 'sequence':
                 self.config.update({'mode' : value})
 
         elif command == 'input_image':
@@ -425,6 +425,57 @@ class PromptManager():
                     value = line.split("=",1)[1].lower().strip()
                     self.handle_directive(command, value)
 
+
+    # return a list of all PromptSection combinations in sequence
+    def build_sequence(self):
+        prompt_work_queue = deque()
+
+        # convert PromptSections to simple lists so they're iterable
+        all_prompts = list()
+        for ps in self.prompts:
+            prompts = list()
+            prompts = ps.tokens
+
+            tmp = ""
+            for p in prompts:
+                tmp += p
+
+                print ("TMP: " + tmp)
+                all_prompts.append(tmp)
+                tmp = ""
+
+        print (all_prompts)
+
+        for prompt in all_prompts:
+            work = self.config.copy()
+            work['prompt_file'] = self.control.prompt_file
+            str_prompt = ""
+            fragments = 0
+            is_directive = False
+
+            for fragment in prompt:
+                # handle embedded command directives
+                ss = re.search('!(.+?)=', fragment)
+                if ss:
+                    # this is a directive, handle it and ignore this combination
+                    command = ss.group(1).lower().strip()
+                    value = fragment.split("=",1)[1].lower().strip()
+                    self.handle_directive(command, value)
+                    is_directive = True
+                    break
+
+		# THIS IS WHERE THE PROMPT IS CREATED
+                if fragments > 0:
+                    if not (fragment.startswith(',') or fragment.startswith(';')):
+                        str_prompt += "" #self.config.get('delim')
+                str_prompt += fragment
+                fragments += 1
+
+            if not is_directive:
+                work['prompt'] = str_prompt
+                prompt_work_queue.append(work.copy())
+
+        return prompt_work_queue
 
     # return a list of all possible PromptSection combinations
     def build_combinations(self):

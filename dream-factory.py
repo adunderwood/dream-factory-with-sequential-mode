@@ -687,10 +687,12 @@ class Controller:
                 self.work_queue.append(work)
 
         # standard mode, grab all possible combos
-        else:
+        if self.prompt_manager.config.get('mode') == 'standard':
             self.work_queue = self.prompt_manager.build_combinations()
             self.orig_work_queue_size = len(self.work_queue)
 
+        if self.prompt_manager.config.get('mode') == 'sequence':
+            self.work_queue = self.prompt_manager.build_sequence()
 
         self.print("queued " + str(len(self.work_queue)) + " work items.")
 

@@ -1,0 +1,64 @@
+# *****************************************************************************************************
+# Dream Factory example prompt file (standard mode)
+# config settings go here (optionally) and will override any set in your global config file
+# *****************************************************************************************************
+[config]
+
+!MODE = sequence						# standard mode; queue all possible prompt combos
+!SD_LOW_MEMORY = no					# low GPU VRAM mode (yes/no)? slower but far less VRAM required
+!SD_LOW_MEM_TURBO = no				# if you're still getting out-of-memory errors in low VRAM mode, set this to no
+!REPEAT = yes							# repeat when all work finished (yes/no)?
+!DELIM = " "							# delimiter to use between prompt sections, default is space
+
+# in standard mode, you may put also embed any of the following config directives into 
+# the [prompt] sections below; they'll affect all prompts that follow the directive
+
+!WIDTH = 512							# output image width, default is 512
+!HEIGHT = 512							# output image height, default is 512
+!STEPS = 50							# number of steps, more may improve image but increase generation time
+!SAMPLER = plms							# sampler to use (plms, ddim, lms, euler, euler_a, dpm2, dpm2_a, heun)
+!SCALE = 7.5							# guidance scale, increase for stricter prompt adherence
+!SAMPLES = 1							# number of images to generate per prompt
+!INPUT_IMAGE = 							# can specify an input image here (output image will be same resolution)
+!STRENGTH = 0.75						# strength of input image influence (0-1, with 1 corresponding to least influence)
+!CKPT_FILE = 							# model to load (if not specified, default = models/ldm/stable-diffusion-v1/model.ckpt)
+
+# optional integrated ESRGAN/GFPGAN upscaling
+
+!USE_UPSCALE = no						# use ESRGAN to upscale output images?
+!UPSCALE_AMOUNT = 2.0					# upscaling factor
+!UPSCALE_FACE_ENH = no				# use GFPGAN to attempt to enhance faces (may make some images blurry/worse)?
+!UPSCALE_KEEP_ORG = no				# keep the original non-upscaled image (yes/no)?
+
+# optional negative prompt
+
+!NEG_PROMPT = 
+
+
+# *****************************************************************************************************
+# prompt section
+# each of these items will be combined with all other items in all other [prompt] sections
+# see end of file for detailed explanation with examples
+# *****************************************************************************************************
+[prompts]
+
+a cute robot
+a portrait of a cat
+a beautiful landscape
+ethereal
+full of details
+deviantart
+surrealism
+illustration
+digital painting
+muted colors
+
+
+
+
+
+
+
+
+
+
